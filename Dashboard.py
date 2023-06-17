@@ -75,9 +75,9 @@ st.write("Sentiment Counts:")
 for sentiment_label, count in sentiment_counts:
     st.write(sentiment_label, ":", count)
 st.write("Action:", action)
-#st.write("Closing Values:")
-#for date, value in closing_values:
-    #st.write(date, ":", value)
+st.write("Closing Values:")
+for date, value in closing_values:
+    st.write(date, ":", value)
 ##########################################################################################    
 #Create a DataFrame from the closing values
 df_closing_values = pd.DataFrame(closing_values, columns=["Date", "Closing Value"])
@@ -99,13 +99,13 @@ ax.xaxis.set_tick_params(rotation=45, labelsize=8)
 #Set the y-axis ticks and labels
 ax.yaxis.set_tick_params(labelsize=8)
 
-# Add gridlines
-#ax.grid(True, linestyle="--", linewidth=0.5)
+#Add gridlines
+ax.grid(True, linestyle="--", linewidth=0.5)
 
-# Display the graph in Streamlit
-#st.pyplot(fig)
+#Display the graph in Streamlit
+st.pyplot(fig)
 
 #################################################################################################
 
-# Close the connection
+#Close the connection
 conn.close()
