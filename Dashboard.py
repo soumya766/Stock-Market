@@ -1,7 +1,7 @@
 import streamlit as st
 
 pageTitle = "Stock Market Analysis"
-pageIcon = "😊📈"
+pageIcon = "📈"
 pageLayout = "wide"
 
 st.set_page_config(page_title=pageTitle, page_icon=pageIcon, layout=pageLayout)
@@ -55,34 +55,3 @@ st.write("Closing Values:")
 for date, value in closing_values:
     st.write(date, ":", value)
     
-##########################################################################################    
-#Create a DataFrame from the closing values
-#df_closing_values = pd.DataFrame(closing_values, columns=["Date", "Closing Value"])
-#df_closing_values["Date"] = pd.to_datetime(df_closing_values["Date"])
-
-#Create a line plot using Matplotlib to display the closing values over time
-#fig, ax = plt.subplots(figsize=(10, 6))
-#ax.plot(df_closing_values["Date"], df_closing_values["Closing Value"], color="blue", linewidth=2)
-
-#Set the plot labels and title
-#ax.set_xlabel("Date")
-#ax.set_ylabel("Closing Value")
-#ax.set_title("Closing Values for {} - {}".format(selected_start_date, selected_end_date))
-
-#Set the x-axis ticks and labels
-#ax.xaxis.set_major_locator(plt.MaxNLocator(6))
-#ax.xaxis.set_tick_params(rotation=45, labelsize=8)
-
-#Set the y-axis ticks and labels
-#ax.yaxis.set_tick_params(labelsize=8)
-
-#Add gridlines
-#ax.grid(True, linestyle="--", linewidth=0.5)
-
-#Display the graph in Streamlit
-#st.pyplot(fig)
-
-#################################################################################################
-
-#Close the connection
-conn.close()
