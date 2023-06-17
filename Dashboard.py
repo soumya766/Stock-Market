@@ -40,32 +40,9 @@ cursor.execute(query)
 sentiment_counts = cursor.fetchall()
 
 # Get the closing values for the selected date range and company name
-closing_values_query = f"SELECT Date, closing_value FROM df_new_table WHERE Date >= '{selected_start_date}' AND Date <= '{selected_end_date}' AND Company_Name = '{selected_company}'"
+closing_values_query = f"SELECT DISTINCT Date, closing_value FROM df_new_table WHERE Date >= '{selected_start_date}' AND Date <= '{selected_end_date}' AND Company_Name = '{selected_company}'"
 cursor.execute(closing_values_query)
 closing_values = cursor.fetchall()
-
-# Calculate the sentiment analysis based on the counts
-positive_count = 0
-neutral_count = 0
-negative_count = 0
-
-for sentiment_label, count in sentiment_counts:
-    if sentiment_label == "positive":
-        positive_count = count
-    elif sentiment_label == "neutral":
-        neutral_count = count
-    elif sentiment_label == "negative":
-        negative_count = count
-
-# Determine the action based on sentiment counts
-if positive_count > neutral_count and positive_count > negative_count:
-    action = "Hold"
-elif neutral_count > positive_count and neutral_count > negative_count:
-    action = "Sell"
-elif negative_count > positive_count and negative_count > neutral_count:
-    action = "Buy"
-else:
-    action = "No Action"
 
 # Display the results in Streamlit
 st.write("Sentiment Analysis Results:")
@@ -74,10 +51,10 @@ st.write("Date Range:", selected_start_date, "to", selected_end_date)
 st.write("Sentiment Counts:")
 for sentiment_label, count in sentiment_counts:
     st.write(sentiment_label, ":", count)
-st.write("Action:", action)
 st.write("Closing Values:")
 for date, value in closing_values:
     st.write(date, ":", value)
+    
 ##########################################################################################    
 #Create a DataFrame from the closing values
 df_closing_values = pd.DataFrame(closing_values, columns=["Date", "Closing Value"])
