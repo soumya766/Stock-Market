@@ -10,8 +10,8 @@ st.title(pageTitle + " " + pageIcon)
 # ----- DROP DOWN VALUES FOR COMPANY TO SELECT FOR ANALYSIS ------
 import sqlite3
 import streamlit as st
-import pandas as pd
-import matplotlib.pyplot as plt
+#import pandas as pd
+#import matplotlib.pyplot as plt
 
 # Establish a connection to the SQLite database
 conn = sqlite3.connect('df_new.db')
