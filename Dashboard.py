@@ -16,6 +16,78 @@ import streamlit as st
 # Establish a connection to the SQLite database
 conn = sqlite3.connect('df_new.db')
 cursor = conn.cursor()
+#################################################################################
+import streamlit as st
+import yfinance as yf
+from textblob import TextBlob
+import csv
+
+def analyze_sentiment(text):
+    blob = TextBlob(text)
+    sentiment_score = blob.sentiment.polarity
+
+    if sentiment_score > 0:
+        return 'Positive'
+    elif sentiment_score < 0:
+        return 'Negative'
+    else:
+        return 'Neutral'
+
+def get_stock_price(company, date):
+    ticker = yf.Ticker(company)
+    stock_data = ticker.history(start=date, end=date)
+    
+    if len(stock_data) == 1:
+        return stock_data['Close'].values[0]
+    else:
+        return None
+
+def make_investment_decision(company, summary, date):
+    sentiment = analyze_sentiment(summary)
+    
+    if sentiment == 'Positive':
+        if company in ['ICICIBANK.NS', 'HDFCBANK.NS']:
+            return 'Buy'
+        elif company in ['INDUSINDBK.NS', 'SBIN.NS']:
+            return 'Hold'
+        else:
+            return 'No recommendation'
+    elif sentiment == 'Negative':
+        if company in ['ICICIBANK.NS', 'HDFCBANK.NS']:
+            return 'Sell'
+        elif company in ['INDUSINDBK.NS', 'SBIN.NS']:
+            return 'Hold'
+        else:
+            return 'No recommendation'
+    else:
+        return 'No recommendation'
+
+# Streamlit code
+st.title("Stock Market Analysis")
+st.write("Enter the following details:")
+
+# Get user input for company, summary, and date
+company = st.text_input("Company Name (e.g., ICICIBANK.NS, HDFCBANK.NS):")
+summary = st.text_area("Summary Text:")
+date = st.text_input("Date of the Summary (e.g., 2023-06-18):")
+
+if st.button("Make Investment Decision"):
+    stock_price = get_stock_price(company, date)
+    if stock_price is not None:
+        decision = make_investment_decision(company, summary, date)
+        st.write("Investment Decision for {} on {}: {}".format(company, date, decision))
+        st.write("Stock price on {}: {}".format(date, stock_price))
+        
+        # Save output to CSV
+        output_filename = "investment_output.csv"
+        with open(output_filename, 'w', newline='') as csvfile:
+            writer = csv.writer(csvfile)
+            writer.writerow(["Company", "Date", "Investment Decision", "Stock Price"])
+            writer.writerow([company, date, decision, stock_price])
+            
+        st.write("Output saved to '{}'.".format(output_filename))
+    else:
+        st.write("Invalid date or company ticker.")
 
 
 # Create a form using st.form
